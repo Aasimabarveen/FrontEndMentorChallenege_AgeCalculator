@@ -131,31 +131,48 @@ function calculateAge(day,month,year){
 	let outputmonth="";
 	let outputyear="";
 	let currDate=currentDate.getDate();
-	let currMonth=currentDate.getMonth();
+	let currMonth=currentDate.getMonth()+1;
 	let currYear=currentDate.getFullYear();
+	day=parseInt(day);
+	month=parseInt(month);
+	year=parseInt(year);
 
-	if(currYear>parseInt(year)||(parseInt(month)==currMonth&&parseInt(day)>=currDate)){
-		outputyear=currYear-parseInt(year);
+	if(currYear>year)
+		outputyear=currYear-year;
+	if(currMonth>month){
+		if(currDate>=day)
+			outputmonth=currMonth-month;
+		else if(currDate<day)
+			outputmonth=currMonth-month-1;
 	}
-	else
-		outputyear=currYear-parseInt(year)-1;
+	else if(currMonth==month){
+		if(currDate>=day)
+			outputmonth=currMonth-month;
+		if(currDate<day){
+			outputmonth=currMonth-month+11;
+			outputyear-=1;
+		}
+	}
+	else if(currMonth<month){
+		if(currDate>=day)
+			outputmonth=currMonth-month+12;
+		else if(day>currDate)
+			outputmonth=currMonth-month+11;
 
-	if(currMonth>=parseInt(month)){
-		outputmonth=currMonth-parseInt(month);
+		outputyear-=1;
 	}
-	else if (parseInt(month)>currMonth) {
-		outputmonth=currMonth-parseInt(month)-1;		
+	if(currDate>day){
+		outputdate=currDate-day;
 	}
-	outputmonth=outputmonth<0?outputmonth+12:outputmonth;
-	if(currDate>=parseInt(day)){
-		outputdate=currDate-parseInt(day);
-	}
-	else{
+	else if(currDate<day){
 		date=new Date(parseInt(year),parseInt(month),0).getDate();
-		outputdate=currDate-parseInt(day)+date;
+		outputdate=currDate-day+date+1;
+	}
+	else if(currDate==day){
+		outputdate=0;
 	}
 	output_day.textContent=outputdate;
 	output_month.textContent=outputmonth;
+	outputyear=outputyear<0?0:outputyear;
 	output_year.textContent=outputyear;
-	
 }
